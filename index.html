@@ -17,57 +17,29 @@
             margin: 0;
             overflow: hidden;
         }
-        #obsah { display: none; }
-        #final-stranka { display: none; }
-        h1 { color: #d63384; font-size: 3rem; }
-        .buttons { margin-top: 20px; }
+        #obsah, #final-stranka { display: none; }
+        h1 { color: #d63384; font-size: 2.5rem; padding: 0 10px; }
+        .buttons { margin-top: 50px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
         button {
             padding: 15px 30px;
             font-size: 1.2rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: 0.3s;
-            margin: 10px;
+            transition: transform 0.3s ease;
         }
-        #ano-btn { background-color: #ff4d6d; color: white; }
-        #ne-btn { background-color: #adb5bd; color: white; }
-        
-        .foto-kontejner img {
-            max-width: 300px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        
-        #navod-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 0.8rem;
-            padding: 5px 15px;
-            background: #eee;
-        }
-        
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 100px rgba(0,0,0,0.5);
-            z-index: 10;
-            text-align: left;
-            max-width: 80%;
-        }
+        #ano-btn { background-color: #ff4d6d; color: white; order: 1; }
+        #ne-btn { background-color: #adb5bd; color: white; order: 2; }
+        .foto-kontejner img { max-width: 280px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        #navod-btn { position: fixed; bottom: 20px; right: 20px; font-size: 0.8rem; padding: 8px 15px; background: #eee; border-radius: 10px; }
+        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 15px; box-shadow: 0 0 100px rgba(0,0,0,0.5); z-index: 100; text-align: left; max-width: 80%; }
     </style>
 </head>
 <body>
 
     <div id="lock-screen">
         <h1>Už brzy... ❤️</h1>
-        <p>Tato stránka se odemkne až 14. 2. 2026.</p>
+        <p>Kontroluji datum...</p>
     </div>
 
     <div id="obsah">
@@ -87,22 +59,22 @@
     </div>
 
     <div id="navod-modal" class="modal">
-        <h3>Jak se starat o tvou Lulu Rose:</h3>
+        <h3>Jak se starat o tvou růži:</h3>
         <ul>
-            <li>🚫 <b>Nikdy nezalévat!</b> Vlhkost ji zničí.</li>
-            <li>☀️ <b>Žádné přímé slunce</b> – mohla by vyblednout.</li>
-            <li>🌬️ <b>Prach odfouknout</b> jen jemně (fénem na studeno z dálky).</li>
-            <li>🏠 <b>Mít ji v suchu</b> – koupelna není kamarád.</li>
+            <li>🚫 <b>Nikdy nezalévat!</b></li>
+            <li>☀️ <b>Žádné přímé slunce.</b></li>
+            <li>🌬️ <b>Prach jen jemně odfouknout.</b></li>
         </ul>
         <button onclick="document.getElementById('navod-modal').style.display='none'">Zavřít</button>
     </div>
 
     <script>
-        let anoVelikost = 1.2;
-        let neVelikost = 1.2;
+        let anoScale = 1;
+        let neScale = 1;
 
         function kontrolaData() {
             const dnes = new Date();
+            // Nastaveno na 13. února 2026 - odemkne se okamžitě
             const valentin = new Date('2026-02-13');
             
             if (dnes >= valentin) {
@@ -112,12 +84,11 @@
         }
 
         function odmitnout() {
-            anoVelikost += 0.5;
-            neVelikost -= 0.1;
-            if (neVelikost < 0.2) neVelikost = 0.2;
-            
-            document.getElementById('ano-btn').style.transform = `scale(${anoVelikost})`;
-            document.getElementById('ne-btn').style.transform = `scale(${neVelikost})`;
+            anoScale += 0.5;
+            neScale -= 0.15;
+            if (neScale < 0.3) neScale = 0.3;
+            document.getElementById('ano-btn').style.transform = `scale(${anoScale})`;
+            document.getElementById('ne-btn').style.transform = `scale(${neScale})`;
         }
 
         function prijmout() {
@@ -132,5 +103,4 @@
         kontrolaData();
     </script>
 </body>
-
 </html>
