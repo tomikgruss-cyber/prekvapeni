@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentýnské překvapení</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #fff0f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #obsah { display: none; }
+        #final-stranka { display: none; }
+        h1 { color: #d63384; font-size: 3rem; }
+        .buttons { margin-top: 20px; }
+        button {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 10px;
+        }
+        #ano-btn { background-color: #ff4d6d; color: white; }
+        #ne-btn { background-color: #adb5bd; color: white; }
+        
+        .foto-kontejner img {
+            max-width: 300px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        #navod-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 0.8rem;
+            padding: 5px 15px;
+            background: #eee;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 100px rgba(0,0,0,0.5);
+            z-index: 10;
+            text-align: left;
+            max-width: 80%;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="lock-screen">
+        <h1>Už brzy... ❤️</h1>
+        <p>Tato stránka se odemkne až 14. 2. 2026.</p>
+    </div>
+
+    <div id="obsah">
+        <h1>Budeš můj Valentýn?</h1>
+        <div class="buttons">
+            <button id="ano-btn" onclick="prijmout()">ANO</button>
+            <button id="ne-btn" onclick="odmitnout()">NE</button>
+        </div>
+    </div>
+
+    <div id="final-stranka">
+        <h1>Miluju tě! ❤️</h1>
+        <div class="foto-kontejner">
+            <img src="nase_fotka.jpg" alt="Naše společná fotka">
+        </div>
+        <button id="navod-btn" onclick="ukazNavod()">Návod ke kytce 🌹</button>
+    </div>
+
+    <div id="navod-modal" class="modal">
+        <h3>Jak se starat o tvou Lulu Rose:</h3>
+        <ul>
+            <li>🚫 <b>Nikdy nezalévat!</b> Vlhkost ji zničí.</li>
+            <li>☀️ <b>Žádné přímé slunce</b> – mohla by vyblednout.</li>
+            <li>🌬️ <b>Prach odfouknout</b> jen jemně (fénem na studeno z dálky).</li>
+            <li>🏠 <b>Mít ji v suchu</b> – koupelna není kamarád.</li>
+        </ul>
+        <button onclick="document.getElementById('navod-modal').style.display='none'">Zavřít</button>
+    </div>
+
+    <script>
+        let anoVelikost = 1.2;
+        let neVelikost = 1.2;
+
+        function kontrolaData() {
+            const dnes = new Date();
+            const valentin = new Date('2026-02-14');
+            
+            if (dnes >= valentin) {
+                document.getElementById('lock-screen').style.display = 'none';
+                document.getElementById('obsah').style.display = 'block';
+            }
+        }
+
+        function odmitnout() {
+            anoVelikost += 0.5;
+            neVelikost -= 0.1;
+            if (neVelikost < 0.2) neVelikost = 0.2;
+            
+            document.getElementById('ano-btn').style.transform = `scale(${anoVelikost})`;
+            document.getElementById('ne-btn').style.transform = `scale(${neVelikost})`;
+        }
+
+        function prijmout() {
+            document.getElementById('obsah').style.display = 'none';
+            document.getElementById('final-stranka').style.display = 'block';
+        }
+
+        function ukazNavod() {
+            document.getElementById('navod-modal').style.display = 'block';
+        }
+
+        kontrolaData();
+    </script>
+</body>
+</html>
