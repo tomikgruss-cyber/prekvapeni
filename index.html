@@ -16,30 +16,94 @@
             height: 100vh;
             margin: 0;
             overflow: hidden;
+            transition: background-color 1s ease;
         }
-        #obsah, #final-stranka { display: none; }
-        h1 { color: #d63384; font-size: 2.5rem; padding: 0 10px; }
-        .buttons { margin-top: 50px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+
+        .fade-in {
+            animation: fadeIn 1.5s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #obsah, #final-stranka { display: none; opacity: 0; }
+
+        h1 { color: #d63384; font-size: 2.5rem; padding: 0 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+
+        .buttons { 
+            margin-top: 50px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 25px; 
+        }
+
         button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
+            padding: 15px 40px;
+            font-size: 1.3rem;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        #ano-btn { background-color: #ff4d6d; color: white; order: 1; }
+
+        #ano-btn { 
+            background-color: #ff4d6d; 
+            color: white; 
+            order: 1;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 77, 109, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
+        }
+
         #ne-btn { background-color: #adb5bd; color: white; order: 2; }
-        .foto-kontejner img { max-width: 280px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        #navod-btn { position: fixed; bottom: 20px; right: 20px; font-size: 0.8rem; padding: 8px 15px; background: #eee; border-radius: 10px; }
-        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 15px; box-shadow: 0 0 100px rgba(0,0,0,0.5); z-index: 100; text-align: left; max-width: 80%; }
+
+        .foto-kontejner img { 
+            max-width: 280px; 
+            border-radius: 20px; 
+            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.2); 
+            margin-top: 20px;
+            border: 5px solid white;
+        }
+
+        #navod-btn { 
+            position: fixed; 
+            bottom: 20px; 
+            right: 20px; 
+            font-size: 0.8rem; 
+            padding: 10px 20px; 
+            background: white; 
+            border-radius: 15px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 50%; left: 50%; 
+            transform: translate(-50%, -50%); 
+            background: white; 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 0 50px rgba(0,0,0,0.3); 
+            z-index: 100; 
+            text-align: left; 
+            width: 85%;
+        }
     </style>
 </head>
 <body>
 
-    <div id="lock-screen">
+    <div id="lock-screen" class="fade-in">
         <h1>Už brzy... ❤️</h1>
-        <p>Kontroluji datum...</p>
+        <p>Tato stránka se odemkne až 14. 2. 2026.</p>
     </div>
 
     <div id="obsah">
@@ -58,14 +122,14 @@
         <button id="navod-btn" onclick="ukazNavod()">Návod ke kytce 🌹</button>
     </div>
 
-    <div id="navod-modal" class="modal">
-        <h3>Jak se starat o tvou růži:</h3>
-        <ul>
-            <li>🚫 <b>Nikdy nezalévat!</b></li>
-            <li>☀️ <b>Žádné přímé slunce.</b></li>
-            <li>🌬️ <b>Prach jen jemně odfouknout.</b></li>
+    <div id="navod-modal" class="modal fade-in">
+        <h3 style="color: #d63384;">Jak se starat o tvou růži:</h3>
+        <ul style="line-height: 1.8;">
+            <li>🚫 <b>Nikdy nezalévat!</b> (Vlhkost je nepřítel)</li>
+            <li>☀️ <b>Žádné přímé slunce</b> (Udrží si barvu)</li>
+            <li>🌬️ <b>Prach jen jemně ofouknout</b></li>
         </ul>
-        <button onclick="document.getElementById('navod-modal').style.display='none'">Zavřít</button>
+        <button style="background: #ff4d6d; color: white; width: 100%; margin-top: 15px;" onclick="document.getElementById('navod-modal').style.display='none'">Rozumím</button>
     </div>
 
     <script>
@@ -74,12 +138,20 @@
 
         function kontrolaData() {
             const dnes = new Date();
-            // Nastaveno na 13. února 2026 - odemkne se okamžitě
-            const valentin = new Date('2026-02-13');
+            // NASTAVENO NA ZÍTRA: 14. února 2026
+            const valentin = new Date('2026-02-14'); 
             
             if (dnes >= valentin) {
-                document.getElementById('lock-screen').style.display = 'none';
-                document.getElementById('obsah').style.display = 'block';
+                const lock = document.getElementById('lock-screen');
+                const obsah = document.getElementById('obsah');
+                
+                lock.style.transition = "opacity 0.5s";
+                lock.style.opacity = "0";
+                setTimeout(() => {
+                    lock.style.display = 'none';
+                    obsah.style.display = 'block';
+                    setTimeout(() => { obsah.style.opacity = "1"; obsah.classList.add('fade-in'); }, 10);
+                }, 500);
             }
         }
 
@@ -92,15 +164,28 @@
         }
 
         function prijmout() {
-            document.getElementById('obsah').style.display = 'none';
-            document.getElementById('final-stranka').style.display = 'block';
+            const obsah = document.getElementById('obsah');
+            const final = document.getElementById('final-stranka');
+            
+            obsah.style.transition = "opacity 0.5s";
+            obsah.style.opacity = "0";
+            
+            setTimeout(() => {
+                obsah.style.display = 'none';
+                final.style.display = 'block';
+                document.body.style.backgroundColor = "#ffe4e1";
+                setTimeout(() => { 
+                    final.style.opacity = "1"; 
+                    final.classList.add('fade-in'); 
+                }, 10);
+            }, 500);
         }
 
         function ukazNavod() {
             document.getElementById('navod-modal').style.display = 'block';
         }
 
-        kontrolaData();
+        window.onload = kontrolaData;
     </script>
 </body>
 </html>
