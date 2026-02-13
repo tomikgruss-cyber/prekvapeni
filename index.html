@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Valentýnské překvapení</title>
     <style>
+        /* Základní styl a plynulé přechody */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center;
@@ -19,6 +20,7 @@
             transition: background-color 1s ease;
         }
 
+        /* Animace pro postupné objevování prvků */
         .fade-in {
             animation: fadeIn 1.5s ease-in forwards;
         }
@@ -57,6 +59,7 @@
             animation: pulse 2s infinite;
         }
 
+        /* Pulzování tlačítka ANO */
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
             70% { box-shadow: 0 0 0 20px rgba(255, 77, 109, 0); }
@@ -103,7 +106,7 @@
 
     <div id="lock-screen" class="fade-in">
         <h1>Už brzy... ❤️</h1>
-        <p>Tato stránka se odemkne až 14. 2. 2026.</p>
+        <p>Kontroluji valentýnky...</p>
     </div>
 
     <div id="obsah">
@@ -138,13 +141,13 @@
 
         function kontrolaData() {
             const dnes = new Date();
-            // NASTAVENO NA ZÍTRA: 14. února 2026
-            const valentin = new Date('2026-02-14'); 
+            const valentin = new Date('2026-02-13'); // Odemčeno pro tvůj test
             
             if (dnes >= valentin) {
                 const lock = document.getElementById('lock-screen');
                 const obsah = document.getElementById('obsah');
                 
+                // Přechod mezi lock screenem a otázkou
                 lock.style.transition = "opacity 0.5s";
                 lock.style.opacity = "0";
                 setTimeout(() => {
@@ -173,7 +176,7 @@
             setTimeout(() => {
                 obsah.style.display = 'none';
                 final.style.display = 'block';
-                document.body.style.backgroundColor = "#ffe4e1";
+                document.body.style.backgroundColor = "#ffe4e1"; // Změna pozadí na růžovější
                 setTimeout(() => { 
                     final.style.opacity = "1"; 
                     final.classList.add('fade-in'); 
