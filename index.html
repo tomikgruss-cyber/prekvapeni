@@ -19,7 +19,15 @@
             transition: background-color 1s ease;
         }
 
-        .fade-in {
+        /* Oprava: Přidány plynulé přechody pro viditelnost */
+        #obsah, #final-stranka { 
+            display: none; 
+            opacity: 0; 
+            transition: opacity 0.8s ease;
+            width: 100%;
+        }
+
+        .fade-in-anim {
             animation: fadeIn 1.5s ease-in forwards;
         }
 
@@ -27,8 +35,6 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        #obsah, #final-stranka { display: none; opacity: 0; }
 
         h1 { color: #d63384; font-size: 2.5rem; padding: 0 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
 
@@ -38,6 +44,7 @@
             flex-direction: column; 
             align-items: center; 
             gap: 25px; 
+            min-height: 200px; /* Rezerva pro zvětšující se tlačítko */
         }
 
         button {
@@ -54,13 +61,7 @@
             background-color: #ff4d6d; 
             color: white; 
             order: 1;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
-            70% { box-shadow: 0 0 0 20px rgba(255, 77, 109, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
+            z-index: 10;
         }
 
         #ne-btn { background-color: #adb5bd; color: white; order: 2; }
@@ -96,13 +97,14 @@
             z-index: 100; 
             text-align: left; 
             width: 85%;
+            max-width: 400px;
         }
     </style>
 </head>
 <body>
 
-    <div id="lock-screen" class="fade-in">
-        <h1>Už brzy... ❤️</h1>
+    <div id="lock-screen">
+        <h1 class="fade-in-anim">Už brzy... ❤️</h1>
         <p>Tato stránka se odemkne až 14. 2. 2026.</p>
     </div>
 
@@ -122,7 +124,7 @@
         <button id="navod-btn" onclick="ukazNavod()">Návod ke kytce 🌹</button>
     </div>
 
-    <div id="navod-modal" class="modal fade-in">
+    <div id="navod-modal" class="modal">
         <h3 style="color: #d63384;">Jak se starat o tvou růži:</h3>
         <ul style="line-height: 1.8;">
             <li>🚫 <b>Nikdy nezalévat!</b> (Vlhkost je nepřítel)</li>
@@ -138,36 +140,49 @@
 
         function kontrolaData() {
             const dnes = new Date();
-            // NASTAVENO NA ZÍTRA: 14. února 2026
-            const valentin = new Date('2026-02-14'); 
-            
+            // Nastavení cílového data (měsíce jsou 0-11, takže 1 = únor)
+            const valentin = new Date(2026, 1, 14); 
+
+            // Pokud je dnes Valentýn nebo později
             if (dnes >= valentin) {
                 const lock = document.getElementById('lock-screen');
                 const obsah = document.getElementById('obsah');
                 
                 lock.style.transition = "opacity 0.5s";
                 lock.style.opacity = "0";
+                
                 setTimeout(() => {
                     lock.style.display = 'none';
                     obsah.style.display = 'block';
-                    setTimeout(() => { obsah.style.opacity = "1"; obsah.classList.add('fade-in'); }, 10);
+                    // Krátký timeout pro spuštění CSS transition
+                    setTimeout(() => { 
+                        obsah.style.opacity = "1";
+                    }, 50);
                 }, 500);
             }
         }
 
         function odmitnout() {
-            anoScale += 0.5;
+            anoScale += 0.4;
             neScale -= 0.15;
             if (neScale < 0.3) neScale = 0.3;
-            document.getElementById('ano-btn').style.transform = `scale(${anoScale})`;
-            document.getElementById('ne-btn').style.transform = `scale(${neScale})`;
+            
+            const anoBtn = document.getElementById('ano-btn');
+            const neBtn = document.getElementById('ne-btn');
+            
+            anoBtn.style.transform = `scale(${anoScale})`;
+            neBtn.style.transform = `scale(${neScale})`;
+            
+            // Malý vtip: Pokud je tlačítko ANO už obří, změníme text NE
+            if (anoScale > 3) {
+                neBtn.innerText = "Už nejde kliknout!";
+            }
         }
 
         function prijmout() {
             const obsah = document.getElementById('obsah');
             const final = document.getElementById('final-stranka');
             
-            obsah.style.transition = "opacity 0.5s";
             obsah.style.opacity = "0";
             
             setTimeout(() => {
@@ -176,8 +191,7 @@
                 document.body.style.backgroundColor = "#ffe4e1";
                 setTimeout(() => { 
                     final.style.opacity = "1"; 
-                    final.classList.add('fade-in'); 
-                }, 10);
+                }, 50);
             }, 500);
         }
 
@@ -185,6 +199,7 @@
             document.getElementById('navod-modal').style.display = 'block';
         }
 
+        // Spustit kontrolu po načtení stránky
         window.onload = kontrolaData;
     </script>
 </body>
